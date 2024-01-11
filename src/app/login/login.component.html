@@ -1,0 +1,84 @@
+<div class="d-flex h-100 w-100 justify-content-center align-items-center">
+  <div class="pm-bg-ffffff pm-w-704px pm-border-radius-4px pm-border-general d-flex">
+    <div class="pm-px-32px pm-w-284px pm-bg-009cdb pm-color-ffffff">
+      <div class="d-flex justify-content-center align-items-center pm-py-24px">
+        <img src="../../assets/images/logo4.png"
+          width="40px"
+          height="40px"
+          alt="">
+        <div class="pm-font-size-12px pm-ml-8px">Product Management
+        </div>
+      </div>
+      <div class="pm-font-head-5s">Bạn chưa có tài khoản?</div>
+      <div class="pm-my-16px">Đăng ký ngay hôm nay để trải nghiệm dịch vụ</div>
+      <div>
+        <button nz-button
+          nzType="default"
+          (click)="handlerSignUp()">Đăng ký ngay</button>
+      </div>
+    </div>
+    <div class="pm-px-42px pm-py-20px pm-w-420px d-flex align-items-center">
+      <div class="w-100">
+        <div class="pm-font-head-3s">ĐĂNG NHẬP</div>
+        <div class="pm-mt-8px pm-mb-20px">Bạn hãy điền tên tài khoản và mật khẩu để đăng nhập nhé.</div>
+        <form nz-form
+          [formGroup]="loginForm">
+          <nz-form-item class="pm-mb-0">
+            <nz-form-control nzErrorTip="Tài khoản không thể để trống!">
+              <nz-input-group [nzPrefix]="prefixUser">
+                <input type="text"
+                  nz-input
+                  formControlName="username"
+                  placeholder="Tài khoản">
+              </nz-input-group>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item class="pm-mt-16px pm-mb-0">
+            <nz-form-control nzErrorTip="Mật khẩu không thể để trống!">
+              <nz-input-group [nzPrefix]="prefixLock"
+                [nzSuffix]="suffixTemplate">
+                <input [type]="passwordVisible ? 'text' : 'password'"
+                  nz-input
+                  formControlName="password"
+                  placeholder="Mật khẩu">
+              </nz-input-group>
+            </nz-form-control>
+          </nz-form-item>
+          <!-- <div class="pm-mt-16px">
+            <label nz-checkbox
+            [ngModel]="!!rememberAccount"
+            [ngModelOptions]="{standalone: true}"
+            (ngModelChange)="handlerUpdateRemember($event)">Nhớ mật khẩu</label>
+          </div> -->
+          <nz-form-item class="pm-mt-16px pm-mb-0">
+            <nz-form-control>
+              <div class="d-flex align-items-center justify-content-between">
+                <button nz-button
+                  [nzType]="'primary'"
+                  [nzLoading]="!!loading"
+                  (click)="handlerLogin()">Đăng Nhập
+                  <span nz-icon
+                    nzType="login"></span>
+                </button>
+                <a nz-button
+                  [nzType]="'link'"
+                  class="pm-p-0"
+                  (click)="handlerForgetPassword()">Quên mật khẩu
+                </a>
+              </div>
+            </nz-form-control>
+          </nz-form-item>
+        </form>
+        <ng-template #prefixUser><span nz-icon
+            nzType="user"></span></ng-template>
+        <ng-template #prefixLock><span nz-icon
+            nzType="lock"></span></ng-template>
+        <ng-template #suffixTemplate>
+          <span nz-icon
+            [nzType]="passwordVisible ? 'eye-invisible' : 'eye'"
+            (click)="onChangeViewPassword()"></span>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>

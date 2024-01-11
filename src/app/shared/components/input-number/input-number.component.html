@@ -1,0 +1,7 @@
+<input #inputElement
+  nz-input
+  type="number"
+  [ngModel]="item[field]"
+  placeholder="Nhập thời gian làm việc"
+  (ngModelChange)="onChange($event)"
+  (blur)="onBlur()" />

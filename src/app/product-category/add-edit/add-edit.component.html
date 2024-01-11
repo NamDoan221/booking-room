@@ -1,0 +1,68 @@
+<div class="w-100 h-100">
+  <form nz-form
+    class="w-100 h-100"
+    [formGroup]="productCategoryForm">
+    <div class="h-100 w-100 d-flex flex-column justify-content-between">
+      <div>
+        <nz-form-item class="pm-mb-0">
+          <nz-form-control nzErrorTip="Tên danh mục sản phẩm không thể để trống!">
+            <nz-form-label [nzNoColon]="true"
+              [nzFor]="'name'">
+              Tên danh mục sản phẩm
+            </nz-form-label>
+            <nz-input-group>
+              <input type="text"
+                nz-input
+                class="pm-border-radius-4px"
+                formControlName="name"
+                placeholder="Nhập tên danh mục sản phẩm">
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item class="pm-mb-0 pm-mt-16px">
+          <nz-form-control>
+            <nz-form-label [nzNoColon]="true"
+              [nzFor]="'describe'">
+              Mô tả danh mục sản phẩm
+            </nz-form-label>
+            <nz-input-group>
+              <textarea nz-input
+                formControlName="describe"
+                placeholder="Nhập mô tả"
+                [nzAutosize]="{ minRows: 8, maxRows: 8 }"></textarea>
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item class="pm-mt-16px bm-mb-0">
+          <nz-form-control nzErrorTip="Trạng thái không thể để trống!">
+            <nz-form-label [nzNoColon]="true"
+              [nzFor]="'status'">
+              Trạng thái
+            </nz-form-label>
+            <div class="w-70">
+              <nz-select [formControlName]="'status'"
+                [nzPlaceHolder]="'Chọn trạng thái'"
+                [nzNotFoundContent]="notFoundStatusTemplate">
+                <nz-option *ngFor="let item of listStatusProductCategory"
+                  [nzValue]="item.key"
+                  [nzLabel]="item.name">
+                </nz-option>
+              </nz-select>
+              <ng-template #notFoundStatusTemplate>
+                <div class="d-flex align-items-center justify-content-center">
+                  <span>{{'Chưa có trạng thái nào trong danh sách'}}</span>
+                </div>
+              </ng-template>
+            </div>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div class="d-flex justify-content-end pm-mt-20px">
+        <button nz-button
+          nzType="primary"
+          [nzLoading]="!!loading"
+          (click)="handlerUpdate($event)">{{modeEdit ? 'Cập nhật' : 'Lưu'}}</button>
+      </div>
+    </div>
+  </form>
+</div>

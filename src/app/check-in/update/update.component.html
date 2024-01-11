@@ -1,0 +1,36 @@
+<div class="w-100 h-100">
+  <div class="h-100 w-100 d-flex flex-column justify-content-between">
+    <div class="w-100 h-100">
+      <div *ngFor="let account of listAccount"
+        class="pm-py-12px pm-border-bottom-general d-flex">
+        <div class="w-40">
+          <div>Tên nhân viên</div>
+          <div class="pm-mt-8px">{{account.fullname}}</div>
+        </div>
+        <div class="w-20">
+          <div>Trạng thái</div>
+          <div class="pm-mt-8px">
+            <label nz-checkbox
+              [nzChecked]="account.id | CheckedInPipe:accountCheckedIn:false"
+              (nzCheckedChange)="handlerChangeCheckedIn($event, account.id)"></label>
+          </div>
+        </div>
+        <div *ngIf="account.id | CheckedInPipe:accountCheckedIn:false"
+          class="w-40">
+          <div>Thời gian làm việc (Tối đa: 12h)</div>
+          <div class="pm-mt-8px">
+            <bm-components-input-number [item]="account.id | CheckedInPipe:accountCheckedIn:true"
+              [field]="'time_work'" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="modeEdit"
+      class="d-flex justify-content-end pm-mt-20px">
+      <button nz-button
+        nzType="primary"
+        [nzLoading]="!!loading"
+        (click)="handlerUpdate($event)">{{'Lưu'}}</button>
+    </div>
+  </div>
+</div>

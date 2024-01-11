@@ -1,0 +1,31 @@
+<div class="w-100 h-100">
+  <div class="h-100 w-100 d-flex flex-column justify-content-between">
+    <div class="w-100 h-100">
+      <div>Chọn nhân viên</div>
+      <nz-select class="pm-mt-8px w-100"
+        [ngModel]="selectedAccount"
+        [nzPlaceHolder]="'Chọn nhân viên'"
+        [nzNotFoundContent]="notFoundAccountTemplate"
+        (ngModelChange)="handlerSelectedAccount($event)">
+        <nz-option *ngFor="let item of listAccount"
+          [nzLabel]="item.fullname + '(' + item.email + ')'"
+          [nzValue]="item.id"></nz-option>
+      </nz-select>
+      <ng-template #notFoundAccountTemplate>
+        <div class="d-flex align-items-center justify-content-center">
+          <span>{{'Chưa có nhân viên nào trong danh sách'}}</span>
+        </div>
+      </ng-template>
+      <div *ngIf="wageData || loading"
+        class="pm-mt-24px pm-bg-f2f4f8 pm-p-12px pm-border-radius-4px"
+        [ngClass]="{'d-flex align-items-center justify-content-center': loading}">
+        <div *ngIf="wageData">
+          <div>Số ngày làm việc tháng hiện tại: {{wageData.time_month}}</div>
+          <div class="pm-mt-8px">Lương tạm tính: {{wageData.wage | number}}</div>
+        </div>
+        <nz-spin *ngIf="loading"
+          nzSimple></nz-spin>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,81 @@
+<div class="w-100 h-100">
+  <form nz-form
+    class="w-100 h-100"
+    [formGroup]="teamForm">
+    <div class="h-100 w-100 d-flex flex-column justify-content-between">
+      <div>
+        <nz-form-item class="pm-mb-0">
+          <nz-form-control nzErrorTip="Tên team không thể để trống!">
+            <nz-form-label [nzNoColon]="true"
+              [nzFor]="'name'">
+              Tên team
+            </nz-form-label>
+            <nz-input-group>
+              <input type="text"
+                nz-input
+                class="pm-border-radius-4px"
+                formControlName="name"
+                placeholder="Nhập tên team">
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item class="pm-mt-16px bm-mb-0">
+          <nz-form-control nzErrorTip="Thành viên không thể để trống!">
+            <nz-form-label [nzNoColon]="true"
+              [nzFor]="'accounts'">
+              Thành viên
+            </nz-form-label>
+            <div class="w-70">
+              <nz-select [nzMaxTagCount]="3"
+                [nzMaxTagPlaceholder]="tagPlaceHolder"
+                nzMode="multiple"
+                nzPlaceHolder="Chọn thành viên"
+                [nzNotFoundContent]="notFoundAccountTemplate"
+                [formControlName]="'accounts'"
+                (ngModelChange)="handlerChangeAccount($event)">
+                <nz-option *ngFor="let item of listAccount"
+                  [nzLabel]="item.fullname + '(' + item.email + ')'"
+                  [nzValue]="item.id"></nz-option>
+              </nz-select>
+              <ng-template #tagPlaceHolder
+                let-selectedList>và {{ selectedList.length }} thành viên khác</ng-template>
+              <ng-template #notFoundAccountTemplate>
+                <div class="d-flex align-items-center justify-content-center">
+                  <span>{{'Chưa có nhân viên nào trong danh sách'}}</span>
+                </div>
+              </ng-template>
+            </div>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item class="pm-mt-16px bm-mb-0">
+          <nz-form-control nzErrorTip="Quản lý không thể để trống!">
+            <nz-form-label [nzNoColon]="true"
+              [nzFor]="'leader'">
+              Quản lý
+            </nz-form-label>
+            <div class="w-70">
+              <nz-select [formControlName]="'leader'"
+                [nzPlaceHolder]="'Chọn quản lý'"
+                [nzNotFoundContent]="notFoundLeaderTemplate">
+                <nz-option *ngFor="let item of listSelectedAccount"
+                  [nzLabel]="item.fullname + '(' + item.email + ')'"
+                  [nzValue]="item.id"></nz-option>
+              </nz-select>
+              <ng-template #notFoundLeaderTemplate>
+                <div class="d-flex align-items-center justify-content-center">
+                  <span>{{'Chưa có thành viên nào trong danh sách'}}</span>
+                </div>
+              </ng-template>
+            </div>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div class="d-flex justify-content-end pm-mt-20px">
+        <button nz-button
+          nzType="primary"
+          [nzLoading]="!!loading"
+          (click)="handlerUpdate($event)">{{modeEdit ? 'Cập nhật' : 'Lưu'}}</button>
+      </div>
+    </div>
+  </form>
+</div>

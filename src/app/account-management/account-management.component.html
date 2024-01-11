@@ -1,0 +1,123 @@
+<div class="w-100 h-100 d-flex flex-column">
+  <div class="d-flex align-items-center justify-content-between">
+    <div class="d-flex align-items-center">
+      <div class="pm-font-head-3s pm-mr-24px">Tài khoản</div>
+      <button nz-button
+        nzType="primary"
+        (click)="handlerAddAccount($event)">
+        <i nz-icon
+          nzType="plus"
+          nzTheme="outline"></i>Thêm tài khoản</button>
+      <button nz-button
+        *ngIf="showDelete"
+        class="pm-ml-12px"
+        nzType="primary"
+        nzDanger
+        (click)="handlerDeleteAccount($event)">Xoá tài khoản</button>
+    </div>
+    <div class="d-flex">
+      <nz-input-group class="pm-w-503px"
+        [nzSuffix]="suffixIconSearch">
+        <input type="text"
+          nz-input
+          placeholder="Tìm theo tên nhân viên"
+          (keyup)="handlerKeyUp($event)" />
+      </nz-input-group>
+      <ng-template #suffixIconSearch>
+        <i nz-icon
+          nzType="search"></i>
+      </ng-template>
+    </div>
+  </div>
+  <div class="h-100 w-100 pm-mt-12px">
+    <nz-tabset class="h-100"
+      [(nzSelectedIndex)]="selectedTab"
+      (nzSelectChange)="handlerTabChange($event)">
+      <nz-tab *ngFor="let tab of tabs"
+        [nzDisabled]="loading"
+        [nzTitle]="tab.title">
+        <ng-template nz-tab>
+          <div class="h-100"
+            *ngIf="listAccount && listAccount.length">
+            <nz-table #personnelTable
+              [nzScroll]="{ y: 'calc(100vh - 270px)' }"
+              [nzFrontPagination]="false"
+              [nzData]="listAccount"
+              [nzTotal]="totalAccount"
+              [nzPageSize]="params.per_page"
+              [nzPageIndex]="params.page"
+              [nzLoading]="loading"
+              [nzShowTotal]="totalTemplate"
+              [nzSize]="'middle'"
+              [nzBordered]="true"
+              nzPaginationType="small"
+              (nzCurrentPageDataChange)="onCurrentPageDataChange($event)"
+              (nzQueryParams)="handlerQueryParamsChange($event)">
+              <thead>
+                <tr>
+                  <th [(nzChecked)]="checked"
+                    [nzWidth]="'2%'"
+                    (nzCheckedChange)="onAllChecked($event)"></th>
+                  <th *ngFor="let column of columnConfig"
+                    [nzWidth]="column.width"
+                    [nzAlign]="'left'"
+                    class="pm-font-head-4s">
+                    {{ column.name }}
+                  </th>
+                  <th [nzWidth]="'5%'">#</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of personnelTable.data">
+                  <td [nzChecked]="setOfCheckedId.has(item.id)"
+                    (nzCheckedChange)="onItemChecked(item.id, $event)"></td>
+                  <td class="d-flex align-items-center">
+                    <div class="pm-h-30px pm-w-30px">
+                      <img nz-image
+                        class="h-100 w-100 pm-border-radius-50em pm-border-general"
+                        [src]="'https://t3.ftcdn.net/jpg/02/09/37/00/360_F_209370065_JLXhrc5inEmGl52SyvSPeVB23hB6IjrR.jpg'">
+                    </div>
+                    <div class="pm-color-009cdb pm-cursor-pointer pm-ml-8px"
+                      (click)="handlerEditAccount($event, item)">{{item.fullname}}</div>
+                  </td>
+                  <td>{{item.username}}</td>
+                  <td>{{item.phone}}</td>
+                  <td>{{item.email}}</td>
+                  <td>{{item.role === 'admin' ? 'Quản lý' : item.role === 'user' ? 'Nhân viên' : 'Khách hàng'}}</td>
+                  <td>
+                    <span nz-tooltip
+                      [nzTooltipTitle]="deleteTemplate"
+                      class="pm-color-009cdb pm-cursor-pointer">
+                      <span nz-icon
+                        class="pm-color-ff5454"
+                        nz-popconfirm
+                        nzPopconfirmTitle="Bạn có chắc chắn muốn xoá tài khoản này?"
+                        nzPopconfirmPlacement="bottom"
+                        nzCancelText="Huỷ bỏ"
+                        nzOkText="Đồng ý"
+                        (nzOnConfirm)="handlerDelete(item)"
+                        nzType="delete"
+                        nzTheme="outline"></span></span>
+                    <ng-template #deleteTemplate>
+                      <span class="pm-max-h-100px pm-overflow-auto">{{'Xoá tài khoản'}}</span>
+                    </ng-template>
+                  </td>
+                </tr>
+              </tbody>
+            </nz-table>
+          </div>
+          <div class="h-100 w-100 d-flex align-items-center justify-content-center"
+            *ngIf="!listAccount || !listAccount.length">
+            <span *ngIf="!loading">{{params.name ? 'Không có kết quả' : 'Chưa có tài khoản nào trong danh sách'}}</span>
+            <nz-spin *ngIf="loading"
+              nzTip="Đang tải..."
+              nzSimple></nz-spin>
+          </div>
+        </ng-template>
+      </nz-tab>
+    </nz-tabset>
+  </div>
+</div>
+
+<ng-template #totalTemplate
+  let-total>Tổng cộng {{ total }} bản ghi</ng-template>
