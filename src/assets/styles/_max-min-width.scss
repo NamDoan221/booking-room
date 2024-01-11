@@ -1,0 +1,25 @@
+@each $val in $max-min-widths {
+  .#{$prefixCss}max-width-#{$val} {
+    max-width: $val !important;
+  }
+
+  .#{$prefixCss}min-width-#{$val} {
+    min-width: $val !important;
+  }
+}
+
+.#{$prefixCss}width-max-content {
+  width: intrinsic !important;
+  width: -moz-max-content !important;
+  width: -webkit-max-content !important;
+}
+
+@each $val in $percent {
+  .#{$prefixCss}percent-min-width-#{$val} {
+    min-width: $val+#{"%"} !important;
+  }
+
+  .#{$prefixCss}percent-max-width-#{$val} {
+    max-width: $val+#{"%"} !important;
+  }
+}

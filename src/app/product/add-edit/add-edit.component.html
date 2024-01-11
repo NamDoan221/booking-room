@@ -1,0 +1,107 @@
+<div class="w-100 h-100">
+  <form nz-form
+    class="w-100 h-100"
+    [formGroup]="productForm">
+    <div class="h-100 w-100 d-flex flex-column justify-content-between">
+      <div>
+        <nz-form-item class="pm-mb-0">
+          <nz-form-control nzErrorTip="Tên sản phẩm không thể để trống!">
+            <nz-form-label [nzNoColon]="true"
+              [nzFor]="'name'">
+              Tên sản phẩm
+            </nz-form-label>
+            <nz-input-group>
+              <input type="text"
+                nz-input
+                class="pm-border-radius-4px"
+                formControlName="name"
+                placeholder="Nhập tên sản phẩm">
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item class="pm-mt-16px bm-mb-0">
+          <nz-form-control nzErrorTip="Danh mục sản phẩm không thể để trống!">
+            <nz-form-label [nzNoColon]="true"
+              [nzFor]="'id_category'">
+              Danh mục sản phẩm
+            </nz-form-label>
+            <div class="w-70">
+              <nz-select [formControlName]="'id_category'"
+                [nzPlaceHolder]="'Chọn danh mục sản phẩm'"
+                [nzNotFoundContent]="notFoundTemplate">
+                <nz-option *ngFor="let item of listProductCategory"
+                  [nzValue]="item.id"
+                  [nzLabel]="item.name">
+                </nz-option>
+              </nz-select>
+              <ng-template #notFoundTemplate>
+                <div class="d-flex align-items-center justify-content-center">
+                  <span>{{'Chưa có danh mục sản phẩm nào trong danh sách'}}</span>
+                </div>
+              </ng-template>
+            </div>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item class="pm-mt-16px bm-mb-0">
+          <nz-form-control [nzErrorTip]="priceErrorTpl">
+            <nz-form-label [nzNoColon]="true"
+              [nzFor]="'price'">
+              Giá sản phẩm
+            </nz-form-label>
+            <nz-input-group>
+              <input type="number"
+                nz-input
+                class="pm-border-radius-4px"
+                formControlName="price"
+                placeholder="Nhập giá sản phẩm">
+            </nz-input-group>
+          </nz-form-control>
+          <ng-template #priceErrorTpl
+            let-control>
+            <ng-container *ngIf="control.hasError('required')">Giá sản phẩm không thể để trống!</ng-container>
+            <ng-container *ngIf="control.hasError('pattern')">Giá sản phẩm không đúng định dạng!</ng-container>
+          </ng-template>
+        </nz-form-item>
+        <nz-form-item class="pm-mt-16px bm-mb-0">
+          <nz-form-control>
+            <nz-form-label [nzNoColon]="true"
+              [nzFor]="'image'">
+              Ảnh sản phẩm
+            </nz-form-label>
+            <div class="pm-h-100px pm-w-100px position-relative"
+              (mouseleave)="handlerMouseEvent(false)"
+              (mouseenter)="handlerMouseEvent(true)">
+              <img nz-image
+                class="h-100 w-100 pm-border-radius-4px pm-border-general"
+                [src]="image || 'https://shopnguyenlieumypham.com/wp-content/uploads/no-image/product-456x456.jpg'">
+              <div *ngIf="show"
+                class="position-absolute w-100 h-100 pm-top-0 d-flex align-items-center justify-content-center pm-bg-00000099">
+                <a nz-button
+                  nzType="text"
+                  (click)="handlerChangeAvatar()">
+                  <i nz-icon
+                    class="pm-color-ffffff"
+                    nzType="retweet"
+                    nzTheme="outline"></i>
+                </a>
+              </div>
+            </div>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div class="d-flex justify-content-end pm-mt-20px">
+        <button nz-button
+          nzType="primary"
+          [nzLoading]="!!loading"
+          (click)="handlerUpdate($event)">{{modeEdit ? 'Cập nhật' : 'Lưu'}}</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<input #elInputFile
+  type="file"
+  (change)="handlerChangeInputFile($event)"
+  [accept]="'image/png,image/jpeg,image/jpg'"
+  [multiple]="false"
+  style="display:none;" />

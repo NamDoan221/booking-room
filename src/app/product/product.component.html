@@ -1,0 +1,133 @@
+<div class="w-100 h-100 d-flex flex-column">
+  <div class="d-flex align-items-center justify-content-between">
+    <div class="d-flex align-items-center">
+      <div class="pm-font-head-3s pm-mr-24px">Sản phẩm</div>
+      <button nz-button
+        nzType="primary"
+        (click)="handlerAddProduct($event)">
+        <i nz-icon
+          nzType="plus"
+          nzTheme="outline"></i>Thêm sản phẩm</button>
+      <button nz-button
+        *ngIf="showDelete"
+        class="pm-ml-12px"
+        nzType="primary"
+        nzDanger
+        (click)="handlerDeleteProduct($event)">Xoá sản phẩm</button>
+    </div>
+    <div class="d-flex">
+      <div class="pm-mr-12px pm-w-300px">
+        <nz-select class="w-100"
+          [nzMaxTagCount]="3"
+          [nzMaxTagPlaceholder]="tagPlaceHolder"
+          nzMode="multiple"
+          nzPlaceHolder="Chọn danh mục sản phẩm"
+          [nzNotFoundContent]="notFoundTemplate"
+          [ngModel]="productCategorySelect"
+          (ngModelChange)="handlerChangeProductCategorySelected($event)">
+          <nz-option *ngFor="let item of listProductCategory"
+            [nzLabel]="item.name"
+            [nzValue]="item.id">
+          </nz-option>
+        </nz-select>
+        <ng-template #tagPlaceHolder
+          let-selectedList>và {{ selectedList.length }} danh mục khác</ng-template>
+        <ng-template #notFoundTemplate>
+          <div class="d-flex align-items-center justify-content-center">
+            <span>{{'Chưa có danh mục sản phẩm nào trong danh sách'}}</span>
+          </div>
+        </ng-template>
+      </div>
+      <nz-input-group class="pm-w-503px"
+        [nzSuffix]="suffixIconSearch">
+        <input type="text"
+          nz-input
+          placeholder="Tìm theo tên sản phẩm"
+          (keyup)="handlerKeyUp($event)" />
+      </nz-input-group>
+      <ng-template #suffixIconSearch>
+        <i nz-icon
+          nzType="search"></i>
+      </ng-template>
+    </div>
+  </div>
+  <div class="h-100 w-100 pm-mt-12px">
+    <div class="h-100"
+      *ngIf="listProduct && listProduct.length">
+      <nz-table #personnelTable
+        [nzScroll]="{ y: 'calc(100vh - 270px)' }"
+        [nzFrontPagination]="false"
+        [nzData]="listProduct"
+        [nzTotal]="totalProduct"
+        [nzPageSize]="params.per_page"
+        [nzPageIndex]="params.page"
+        [nzLoading]="loading"
+        [nzShowTotal]="totalTemplate"
+        [nzSize]="'middle'"
+        [nzBordered]="true"
+        nzPaginationType="small"
+        (nzCurrentPageDataChange)="onCurrentPageDataChange($event)"
+        (nzQueryParams)="handlerQueryParamsChange($event)">
+        <thead>
+          <tr>
+            <th [(nzChecked)]="checked"
+              [nzWidth]="'2%'"
+              (nzCheckedChange)="onAllChecked($event)"></th>
+            <th *ngFor="let column of columnConfig"
+              [nzWidth]="column.width"
+              [nzAlign]="'left'"
+              class="pm-font-head-4s">
+              {{ column.name }}
+            </th>
+            <th [nzWidth]="'5%'">#</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of personnelTable.data">
+            <td [nzChecked]="setOfCheckedId.has(item.id)"
+              (nzCheckedChange)="onItemChecked(item.id, $event)"></td>
+            <td class="d-flex align-items-center">
+              <div class="pm-h-30px pm-w-30px">
+                <img nz-image
+                  class="h-100 w-100 pm-border-radius-50em pm-border-general"
+                  [src]="item.image || 'https://shopnguyenlieumypham.com/wp-content/uploads/no-image/product-456x456.jpg'">
+              </div>
+              <div class="pm-color-009cdb pm-cursor-pointer pm-ml-8px"
+                (click)="handlerEditProduct($event, item)">{{item.name}}</div>
+            </td>
+            <td>{{item.id_category | GetNameCategoryByIdPipe:listProductCategory:keyFetch}}</td>
+            <td>{{item.price | number}}</td>
+            <td>
+              <span nz-tooltip
+                [nzTooltipTitle]="deleteTemplate"
+                class="pm-color-009cdb pm-cursor-pointer">
+                <span nz-icon
+                  class="pm-color-ff5454"
+                  nz-popconfirm
+                  nzPopconfirmTitle="Bạn có chắc chắn muốn xoá sản phẩm này?"
+                  nzPopconfirmPlacement="bottom"
+                  nzCancelText="Huỷ bỏ"
+                  nzOkText="Đồng ý"
+                  (nzOnConfirm)="handlerDelete(item)"
+                  nzType="delete"
+                  nzTheme="outline"></span></span>
+              <ng-template #deleteTemplate>
+                <span class="pm-max-h-100px pm-overflow-auto">{{'Xoá sản phẩm'}}</span>
+              </ng-template>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+    <div class="h-100 w-100 d-flex align-items-center justify-content-center"
+      *ngIf="!listProduct || !listProduct.length">
+      <span *ngIf="!loading">{{params.name ? 'Không có kết quả' : 'Chưa có sản phẩm nào trong danh sách'}}</span>
+      <nz-spin *ngIf="loading"
+        nzTip="Đang tải..."
+        nzSimple></nz-spin>
+    </div>
+  </div>
+</div>
+
+<ng-template #totalTemplate
+  let-total>Tổng cộng {{ total }} bản ghi</ng-template>

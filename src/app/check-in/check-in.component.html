@@ -1,0 +1,22 @@
+<div class="w-100 h-100 position-relative">
+  <button class="position-absolute pm-top-14px"
+    nz-button
+    nzType="primary"
+    (click)="handlerGetWage($event)">
+    <span nz-icon
+      nzType="dollar"
+      nzTheme="outline"></span>Tính lương</button>
+  <nz-calendar (nzSelectChange)="selectChange($event)">
+    <ng-container *nzDateCell="let date">
+      <div *ngIf="(date | CheckDayCheckedInPipe | async) || (date | UpdateDayCheckedInPipe:dayCheckedIn)"
+        class="h-100 d-flex align-items-center justify-content-center">
+        <span nz-icon
+          nz-tooltip
+          nzTooltipTitle="Đã chấm công"
+          nzType="check"
+          nzTheme="outline"
+          class="pm-color-6fd100 pm-font-size-30px"></span>
+      </div>
+    </ng-container>
+  </nz-calendar>
+</div>
