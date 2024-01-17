@@ -37,6 +37,11 @@ export const menuDefault = (): IFunction[] => {
           Name: 'Sản phẩm',
           Url: '/product',
           IsMenu: false,
+        },
+        {
+          Name: 'Đặt phòng',
+          Url: '/room-schedule',
+          IsMenu: false,
         }
       ]
     },

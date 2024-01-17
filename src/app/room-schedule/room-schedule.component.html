@@ -1,0 +1,138 @@
+<div class="w-100 h-100 d-flex flex-column">
+  <div class="d-flex align-items-center justify-content-between">
+    <div class="d-flex align-items-center">
+      <div class="pm-font-head-3s pm-mr-24px">Phòng đã đặt</div>
+      <button nz-button
+        nzType="primary"
+        (click)="handlerAddRoomSchedule($event)">
+        <i nz-icon
+          nzType="plus"
+          nzTheme="outline"></i>Đặt phòng</button>
+    </div>
+    <div class="d-flex">
+      <div class="pm-mr-12px">
+        <nz-select class="pm-w-200px"
+          [nzShowSearch]="true"
+          [nzAllowClear]="false"
+          [nzServerSearch]="false"
+          [ngModel]="dataViewSelected"
+          [nzPlaceHolder]="'Chọn trạng thái'"
+          [nzNotFoundContent]="notFoundViewTypeTemplate"
+          (ngModelChange)="handlerSelectViewType($event)">
+          <nz-option *ngFor="let item of dataView"
+            [nzValue]="item.key"
+            [nzLabel]="item.label">
+          </nz-option>
+        </nz-select>
+        <ng-template #notFoundViewTypeTemplate>
+          <div class="d-flex align-items-center justify-content-center">
+            <span>{{'Không có kết quả'}}</span>
+          </div>
+        </ng-template>
+      </div>
+      <div>
+        <nz-input-group class="pm-w-503px"
+          [nzSuffix]="suffixIconSearch">
+          <input type="text"
+            nz-input
+            placeholder="Tìm theo tên phòng"
+            (keyup)="handlerKeyUp($event)" />
+        </nz-input-group>
+        <ng-template #suffixIconSearch>
+          <i nz-icon
+            nzType="search"></i>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+  <div class="d-flex pm-mt-12px">
+    <nz-segmented [ngClass]="{'pm-border-radius-top-right-0 pm-border-radius-bottom-right-0': selectedFilterTimeIndex === 5}"
+      [nzOptions]="options"
+      [(ngModel)]="selectedFilterTimeIndex"
+      (nzValueChange)="handleFilterTimeChange($event)"></nz-segmented>
+    <nz-range-picker *ngIf="selectedFilterTimeIndex === 5"
+      [nzAllowClear]="false"
+      nzFormat="dd/MM/yyyy"
+      [(ngModel)]="defaultFilterTime"
+      (ngModelChange)="handlerSelectedFilterTime($event)">
+    </nz-range-picker>
+  </div>
+  <div class="h-100 w-100">
+    <div class="h-100 w-100"
+      *ngIf="listRoomSchedule && listRoomSchedule.length">
+      <nz-table #roomScheduleTable
+        [nzScroll]="{ y: 'calc(100vh - 262px)' }"
+        [nzFrontPagination]="false"
+        [nzData]="listRoomSchedule"
+        [nzTotal]="total"
+        [nzPageSize]="params.per_page"
+        [nzPageIndex]="params.page"
+        [nzShowTotal]="totalTemplate"
+        [nzLoading]="loading"
+        [nzSize]="'middle'"
+        [nzBordered]="true"
+        nzShowPagination
+        nzPaginationType="small"
+        (nzQueryParams)="handlerQueryParamsChange($event)">
+        <thead>
+          <tr>
+            <th *ngFor="let column of columnConfig"
+              [nzAlign]="'left'"
+              class="pm-font-head-4s">
+              {{ column }}
+            </th>
+            <th [nzWidth]="'4%'">#</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of roomScheduleTable.data; index as i">
+            <td>{{item.info_product.name}}</td>
+            <td>{{item.info_category.name}}</td>
+            <td>{{item.create_on | date: 'dd/MM/YYYY'}}</td>
+            <td>{{item.time_check_in | date: 'dd/MM/YYYY'}}</td>
+            <td>{{item.time_check_out | date: 'dd/MM/YYYY'}}</td>
+            <td>{{item.info_account.fullname}}({{item.info_account.email}})</td>
+            <td>{{item.status === 'pre_order' ? 'Đặt trước' : (item.status === 'check_in' ? 'Đã nhận phòng' : 'Đã trả phòng')}}</td>
+            <td>{{item.total_price | number}}</td>
+            <td>
+              <span *ngIf="item.status === 'pre_order'"
+                nz-tooltip
+                [nzTooltipTitle]="checkInTemplate"
+                (click)="handlerCheckIn($event, item)"
+                class="pm-color-009cdb pm-cursor-pointer">
+                <span nz-icon
+                  nzType="login"
+                  nzTheme="outline"></span>
+              </span>
+              <ng-template #checkInTemplate>
+                <div class="pm-max-h-100px pm-overflow-auto">Nhận phòng</div>
+              </ng-template>
+              <span *ngIf="item.status === 'check_in'"
+                nz-tooltip
+                [nzTooltipTitle]="checkOutTemplate"
+                (click)="handlerCheckOut($event, item)"
+                class="pm-color-009cdb pm-cursor-pointer">
+                <span nz-icon
+                  nzType="logout"
+                  nzTheme="outline"></span>
+              </span>
+              <ng-template #checkOutTemplate>
+                <div class="pm-max-h-100px pm-overflow-auto">Trả phòng</div>
+              </ng-template>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+    <div class="h-100 w-100 d-flex align-items-center justify-content-center"
+      *ngIf="!listRoomSchedule || !listRoomSchedule.length">
+      <span *ngIf="!loading">{{params.name ? 'Không có kết quả' : 'Chưa có phòng nào được đặt'}}</span>
+      <nz-spin *ngIf="loading"
+        nzTip="Đang tải..."
+        nzSimple></nz-spin>
+    </div>
+  </div>
+</div>
+
+<ng-template #totalTemplate
+  let-total>Tổng cộng {{ total }} bản ghi</ng-template>

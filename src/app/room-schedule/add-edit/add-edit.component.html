@@ -1,0 +1,71 @@
+<form nz-form
+  class="h-100 w-100"
+  [formGroup]="roomScheduleForm">
+  <div class="h-100 w-100 d-flex flex-column justify-content-between">
+    <div>
+      <nz-form-item class="pm-mt-16px pm-mb-0">
+        <nz-form-control nzErrorTip="Người đặt phòng không thể để trống!">
+          <nz-form-label [nzNoColon]="true"
+            [nzFor]="'id_account'">
+            Người đặt phòng
+          </nz-form-label>
+          <div class="w-100">
+            <nz-select [formControlName]="'id_account'"
+              [nzPlaceHolder]="'Chọn người đặt phòng'"
+              [nzNotFoundContent]="notFoundAccountTemplate">
+              <nz-option *ngFor="let item of listAccount"
+                [nzLabel]="item.fullname + '(' + item.email + ')'"
+                [nzValue]="item.id"></nz-option>
+            </nz-select>
+            <ng-template #notFoundAccountTemplate>
+              <div class="d-flex align-items-center justify-content-center">
+                <span>{{'Chưa có khách hàng nào trong danh sách'}}</span>
+              </div>
+            </ng-template>
+          </div>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item class="pm-mt-16px pm-mb-0">
+        <nz-form-control nzErrorTip="Phòng không thể để trống!">
+          <nz-form-label [nzNoColon]="true"
+            [nzFor]="'id_product'">
+            Phòng
+          </nz-form-label>
+          <div class="w-100">
+            <nz-select [formControlName]="'id_product'"
+              [nzPlaceHolder]="'Chọn phòng'"
+              [nzNotFoundContent]="notFoundRoomTemplate">
+              <nz-option *ngFor="let item of listRoom"
+                [nzLabel]="item.name"
+                [nzValue]="item.id"></nz-option>
+            </nz-select>
+            <ng-template #notFoundRoomTemplate>
+              <div class="d-flex align-items-center justify-content-center">
+                <span>{{'Chưa có phòng nào trong danh sách'}}</span>
+              </div>
+            </ng-template>
+          </div>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item class="pm-mt-16px pm-mb-0 w-65">
+        <nz-form-control [nzErrorTip]="'Thời gian không thể để trống!'">
+          <nz-form-label [nzNoColon]="true"
+            [nzFor]="'rangeTime'">
+            Thời gian
+          </nz-form-label>
+          <nz-range-picker class="w-100"
+            [nzDisabledDate]="disabledDate"
+            nzFormat="dd/MM/yyyy"
+            formControlName="rangeTime">
+          </nz-range-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div class="d-flex justify-content-end pm-mt-20px">
+      <button nz-button
+        nzType="primary"
+        [nzLoading]="!!loading"
+        (click)="handlerSave($event)">{{'Lưu'}}</button>
+    </div>
+  </div>
+</form>

@@ -78,6 +78,19 @@ export class AccountService extends BaseService {
     });
   }
 
+  public getAccountCheckInOfDay(time: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.get(`admin/account/day/check-in`, new HttpParams({ fromObject: { time } })).subscribe({
+        next: result => {
+          resolve(result);
+        },
+        error: err => {
+          reject(err);
+        }
+      });
+    });
+  }
+
   public getWage(id: string): Promise<any> {
     return new Promise((resolve, reject) => {
       this.get(`admin/account/${id}/get_wage`).subscribe({

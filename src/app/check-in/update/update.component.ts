@@ -1,4 +1,4 @@
-import { NgFor, NgIf } from '@angular/common';
+import { NgClass, NgFor, NgIf } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import dayjs from 'dayjs';
@@ -20,7 +20,7 @@ import { CheckedInPipe } from '../pipes/checked-in-pipe';
   styleUrls: ['./update.component.scss'],
   standalone: true,
   imports: [
-    NgIf, NgFor,
+    NgIf, NgFor, NgClass,
     FormsModule,
     ReactiveFormsModule,
     PmIconsProviderModule,
@@ -37,6 +37,7 @@ export class PmCheckInUpdateComponent implements OnInit {
   protected loading?: boolean;
   protected listAccount: IAccount[];
   protected accountCheckedIn: Array<{ account_id: string, time_work: string }>;
+  protected disable?: boolean;
 
   @Input() modeEdit?: boolean;
   @Input() selectDate?: Date;
@@ -54,12 +55,32 @@ export class PmCheckInUpdateComponent implements OnInit {
 
   ngOnInit(): void {
     this.getListAccountNotClient();
+    if (this.selectDate) {
+      this.getAccountCheckInOfDay();
+    }
   }
 
   async getListAccountNotClient() {
     try {
       const result = await this.accountService.getListAccountNotClient();
       this.listAccount.push(...result.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async getAccountCheckInOfDay() {
+    try {
+      const dataTime = dayjs(this.selectDate).format('DD/MM/YYYY');
+      const result = await this.accountService.getAccountCheckInOfDay(dataTime);
+
+      this.accountCheckedIn = result.data.map((item: { id: string; time_work: number; }) => {
+        return {
+          account_id: item.id,
+          time_work: item.time_work
+        }
+      });
+      this.disable = true;
     } catch (error) {
       console.log(error);
     }

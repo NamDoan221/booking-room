@@ -94,7 +94,7 @@ export class PmLayoutComponent implements OnInit {
     }
     if (url === '/logout') {
       try {
-        const result = await this.auth.logout();
+        // const result = await this.auth.logout();
         this.cacheService.clearAll();
         this.zone.run(() => {
           this.router.navigate(['/login']);

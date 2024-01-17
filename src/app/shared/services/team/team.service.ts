@@ -66,7 +66,7 @@ export class TeamService extends BaseService {
 
   public deleteTeam(ids: Array<string>): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.post(`admin/team`, { ids_team: ids }).subscribe({
+      this.post(`admin/team/delete`, { ids_team: ids }).subscribe({
         next: result => {
           resolve(result);
         },

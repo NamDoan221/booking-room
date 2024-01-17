@@ -1,0 +1,41 @@
+<div class="h-100 w-100 d-flex flex-column justify-content-between">
+  <div *ngIf="listProduct.length || loading"
+    class="pm-bg-f2f4f8 pm-p-12px pm-border-radius-4px"
+    [ngClass]="{'d-flex align-items-center justify-content-center': loading}">
+    <div *ngIf="listProduct.length">
+      <div class="d-flex pm-border-bottom-general pm-pb-8px">
+        <div class="w-70">Sản phẩm</div>
+        <div class="w-30">Số lượng</div>
+      </div>
+      <div *ngFor="let item of listProduct"
+        class="d-flex pm-pt-8px">
+        <div class="w-70">{{item.name}}</div>
+        <div class="w-30 d-flex align-items-center">
+          <span class="h-100 pm-bg-ffffff pm-p-4px pm-mr-4px pm-cursor-pointer"
+            nz-icon
+            nzType="minus"
+            nzTheme="outline"
+            (click)="handlerChangeNumber($event, item.id, false)"></span>
+          <div class="h-100 pm-bg-ffffff pm-px-8px">{{item.id | GetNumberUsePipe:productUse:keyFetch}}</div>
+          <span class="h-100 pm-bg-ffffff pm-p-4px pm-ml-4px pm-cursor-pointer"
+            nz-icon
+            nzType="plus"
+            nzTheme="outline"
+            (click)="handlerChangeNumber($event, item.id, true)"></span>
+        </div>
+      </div>
+      <div class="d-flex pm-border-top-general pm-mt-8px pm-pt-8px">
+        <div class="w-70">Tổng tiền cần thanh toán</div>
+        <div class="w-30">{{total_price | number}}</div>
+      </div>
+    </div>
+    <nz-spin *ngIf="loading"
+      nzSimple></nz-spin>
+  </div>
+  <div class="d-flex justify-content-end pm-mt-20px">
+    <button nz-button
+      nzType="primary"
+      [nzLoading]="!!loadingSave"
+      (click)="handlerSave($event)">{{'Lưu'}}</button>
+  </div>
+</div>
