@@ -45,11 +45,9 @@ export class PmChangePasswordComponent {
     this.passwordRetypeVisible = false;
     this.signUpForm = this.fb.group({
       username: ['', [Validators.required]],
-      fullname: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.email]],
-      phone: ['', [Validators.required, Validators.pattern('^(0|84)([0-9]{9})$')]],
       password: ['', [Validators.required, Validators.minLength(8)]],
-      passwordRetype: ['', [Validators.required, this.confirmationValidator.bind(this)]]
+      passwordRetype: ['', [Validators.required, this.confirmationValidator.bind(this)]],
+      code: ['', [Validators.required]],
     });
   }
 
@@ -72,13 +70,13 @@ export class PmChangePasswordComponent {
       const user: IChangePassWord = this.signUpForm.value;
       const result = await this.auth.changePassword(user);
       if (!result.success) {
-        this.nzMessageService.error(result.message ?? 'Tạo tài khoản thất bại! Vui lòng kiểm tra lại thông tin.');
+        this.nzMessageService.error(result.message ?? 'Đổi mật khẩu thất bại! Vui lòng kiểm tra lại thông tin.');
         return;
       }
-      this.nzMessageService.success('Tạo tài khoản thành công!');
+      this.nzMessageService.success('Đổi mật khẩu thành công!');
       this.router.navigate(['/login']);
     } catch (error) {
-      this.nzMessageService.error('Tạo tài khoản thất bại! Vui lòng kiểm tra lại thông tin.');
+      this.nzMessageService.error('Đổi mật khẩu thất bại! Vui lòng kiểm tra lại thông tin.');
       console.log(error);
     } finally {
       this.loading = false;

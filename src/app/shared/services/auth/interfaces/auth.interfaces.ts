@@ -4,6 +4,7 @@ export interface IChangePassWord {
   username: string;
   password: string;
   password_verify: string;
+  code: string;
 }
 
 export interface IToken {
