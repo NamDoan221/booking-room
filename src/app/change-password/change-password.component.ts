@@ -46,7 +46,7 @@ export class PmChangePasswordComponent {
     this.signUpForm = this.fb.group({
       username: ['', [Validators.required]],
       password: ['', [Validators.required, Validators.minLength(8)]],
-      passwordRetype: ['', [Validators.required, this.confirmationValidator.bind(this)]],
+      password_verify: ['', [Validators.required, this.confirmationValidator.bind(this)]],
       code: ['', [Validators.required]],
     });
   }

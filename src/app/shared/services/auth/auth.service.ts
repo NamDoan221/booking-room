@@ -18,13 +18,24 @@ export class AuthService extends BaseService {
     super();
   }
 
-  public decodeToken(): IToken | undefined {
+  public getToken(): IToken | undefined {
     const token = this.cacheService.getKey(ConstantDefines.TOKEN_KEY);
     if (!token) {
       this.redirectToLogin();
       return undefined;
     }
     return JSON.parse(token);
+  }
+
+  public decodeToken(): any | undefined {
+    const token = this.cacheService.getKey(ConstantDefines.TOKEN_KEY);
+    if (!token) {
+      this.redirectToLogin();
+      return undefined;
+    }
+    const tokenTemp = jwtDecode<{ id: string, role: string, fullname: string, email: string, phone: string }>(JSON.parse(token));
+
+    return tokenTemp;
   }
 
   public setToken(token: string) {

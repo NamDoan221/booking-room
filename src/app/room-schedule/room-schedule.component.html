@@ -93,7 +93,7 @@
             <td>{{item.time_check_out | date: 'dd/MM/YYYY'}}</td>
             <td>{{item.info_account.fullname}}({{item.info_account.email}})</td>
             <td>{{item.status === 'pre_order' ? 'Đặt trước' : (item.status === 'check_in' ? 'Đã nhận phòng' : 'Đã trả phòng')}}</td>
-            <td>{{item.total_price | number}}</td>
+            <td>{{item.total_price | number}} VND</td>
             <td>
               <span *ngIf="item.status === 'pre_order'"
                 nz-tooltip

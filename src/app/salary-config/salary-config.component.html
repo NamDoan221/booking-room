@@ -1,0 +1,57 @@
+<div class="w-100 h-100 d-flex flex-column">
+  <div class="d-flex align-items-center justify-content-between">
+    <div class="d-flex align-items-center">
+      <div class="pm-font-head-3s pm-mr-24px">Cấu hình lương</div>
+      <button nz-button
+        nzType="primary"
+        (click)="handlerAddSalaryConfig($event)">
+        <i nz-icon
+          nzType="plus"
+          nzTheme="outline"></i>Thêm cấu hình lương</button>
+      <button nz-button
+        *ngIf="showDelete"
+        class="pm-ml-12px"
+        nzType="primary"
+        nzDanger
+        (click)="handlerDeleteTeam($event)">Xoá cấu hình lương</button>
+    </div>
+  </div>
+  <div class="h-100 w-100 pm-mt-12px">
+    <div class="h-100"
+      *ngIf="listSalaryConfig && listSalaryConfig.length">
+      @for (item of listSalaryConfig; track item.account_id; let last = $last) {
+      <div class="pm-border-general pm-border-radius-8px pm-bg-ffffff pm-p-16px pm-w-503px pm-mx-auto"
+        [class.pm-mb-12px]="!last">
+        <div class="d-flex align-items-center justify-content-between">
+          <div>Nhân viên: <span class="pm-font-head-5s">{{item.account.fullname}} ({{item.account.email}})</span></div>
+          <div class="d-flex align-items-center">
+            <span nz-icon
+              class="pm-color-009cdb pm-cursor-pointer pm-mr-12px"
+              nzType="edit"
+              nzTheme="outline"
+              (click)="handlerEditSalaryConfig($event,item)"></span>
+            <span nz-icon
+              class="pm-color-ff5454 pm-cursor-pointer"
+              nz-popconfirm
+              nzPopconfirmTitle="Bạn có chắc chắn muốn xoá team này?"
+              nzPopconfirmPlacement="bottom"
+              nzCancelText="Huỷ bỏ"
+              nzOkText="Đồng ý"
+              (nzOnConfirm)="handlerDelete(item.account_id)"
+              nzType="delete"
+              nzTheme="outline"></span>
+          </div>
+        </div>
+        <div class="pm-mt-8px">Mức lương: <span class="pm-font-head-5s">{{item.wage | number}} VND</span></div>
+      </div>
+      }
+    </div>
+    <div class="h-100 w-100 d-flex align-items-center justify-content-center"
+      *ngIf="!listSalaryConfig || !listSalaryConfig.length">
+      <span *ngIf="!loading">{{'Chưa có nhân viên nào được cấu hình lương'}}</span>
+      <nz-spin *ngIf="loading"
+        nzTip="Đang tải..."
+        nzSimple></nz-spin>
+    </div>
+  </div>
+</div>

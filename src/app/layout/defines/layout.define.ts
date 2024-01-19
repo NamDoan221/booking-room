@@ -42,6 +42,11 @@ export const menuDefault = (): IFunction[] => {
           Name: 'Đặt phòng',
           Url: '/room-schedule',
           IsMenu: false,
+        },
+        {
+          Name: 'Công việc',
+          Url: '/task',
+          IsMenu: false,
         }
       ]
     },
@@ -50,11 +55,11 @@ export const menuDefault = (): IFunction[] => {
       Icon: 'setting',
       IsMenu: false,
       FunctionChilds: [
-        // {
-        //   Name: 'Thông tin tài khoản',
-        //   Url: '/account',
-        //   IsMenu: false,
-        // },
+        {
+          Name: 'Cấu hình lương',
+          Url: '/salary-config',
+          IsMenu: false,
+        },
         // {
         //   Name: 'Cấu hình dữ liệu khuôn mặt',
         //   Url: '/config-face',

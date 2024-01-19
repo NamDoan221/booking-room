@@ -96,7 +96,7 @@
                 (click)="handlerEditProduct($event, item)">{{item.name}}</div>
             </td>
             <td>{{item.id_category | GetNameCategoryByIdPipe:listProductCategory:keyFetch}}</td>
-            <td>{{item.price | number}}</td>
+            <td>{{item.price | number}} VND</td>
             <td>
               <span nz-tooltip
                 [nzTooltipTitle]="deleteTemplate"

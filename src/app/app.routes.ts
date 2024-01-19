@@ -51,6 +51,14 @@ export const routes: Routes = [
       {
         path: 'room-schedule',
         loadComponent: () => import('./room-schedule/room-schedule.component').then((m) => m.PmRoomScheduleComponent)
+      },
+      {
+        path: 'salary-config',
+        loadComponent: () => import('./salary-config/salary-config.component').then((m) => m.PmSalaryConfigComponent)
+      },
+      {
+        path: 'task',
+        loadComponent: () => import('./task/task.component').then((m) => m.PmTaskComponent)
       }
     ]
   },

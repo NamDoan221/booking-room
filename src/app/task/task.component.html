@@ -1,0 +1,79 @@
+<div class="w-100 h-100 d-flex flex-column">
+  <div class="d-flex align-items-center justify-content-between">
+    <div class="d-flex align-items-center">
+      <div class="pm-font-head-3s pm-mr-24px">Công việc</div>
+      <button *ngIf="role === 'admin'"
+        nz-button
+        nzType="primary"
+        (click)="handlerAddTask($event)">
+        <i nz-icon
+          nzType="plus"
+          nzTheme="outline"></i>Thêm công việc</button>
+    </div>
+  </div>
+  <div class="h-100 w-100 pm-mt-12px">
+    <div class="h-100"
+      *ngIf="listTask && listTask.length">
+      <nz-table #personnelTable
+        [nzScroll]="{ y: 'calc(100vh - 270px)' }"
+        [nzFrontPagination]="false"
+        [nzData]="listTask"
+        [nzTotal]="totalTask"
+        [nzLoading]="loading"
+        [nzShowTotal]="totalTemplate"
+        [nzSize]="'middle'"
+        [nzBordered]="true"
+        nzPaginationType="small"
+        (nzQueryParams)="handlerQueryParamsChange($event)">
+        <thead>
+          <tr>
+            <th *ngFor="let column of columnConfig"
+              [nzWidth]="column.width"
+              [nzAlign]="'left'"
+              class="pm-font-head-4s">
+              {{ column.name }}
+            </th>
+            <th *ngIf="role === 'user'"
+              [nzWidth]="'5%'">#</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of personnelTable.data">
+            <td>{{item.account.fullname}} ({{item.account.email}})</td>
+            <td>{{item.product.name}}</td>
+            <td>{{item.describe}}</td>
+            <td>{{item.status === 'new' ? 'Mới' : 'Hoàn thành'}}</td>
+            <td *ngIf="role === 'user' && item.status === 'new'">
+              <span nz-tooltip
+                [nzTooltipTitle]="deleteTemplate"
+                class="pm-color-009cdb pm-cursor-pointer">
+                <span nz-icon
+                  class="pm-color-6fd100"
+                  nz-popconfirm
+                  nzPopconfirmTitle="Bạn có chắc chắn đã hoàn thành công việc này?"
+                  nzPopconfirmPlacement="bottom"
+                  nzCancelText="Huỷ bỏ"
+                  nzOkText="Đồng ý"
+                  (nzOnConfirm)="handlerUpdate(item)"
+                  nzType="check"
+                  nzTheme="outline"></span></span>
+              <ng-template #deleteTemplate>
+                <span class="pm-max-h-100px pm-overflow-auto">{{'Hoàn thành'}}</span>
+              </ng-template>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+    <div class="h-100 w-100 d-flex align-items-center justify-content-center"
+      *ngIf="!listTask || !listTask.length">
+      <span *ngIf="!loading">{{'Chưa có công việc nào trong danh sách'}}</span>
+      <nz-spin *ngIf="loading"
+        nzTip="Đang tải..."
+        nzSimple></nz-spin>
+    </div>
+  </div>
+</div>
+
+<ng-template #totalTemplate
+  let-total>Tổng cộng {{ total }} bản ghi</ng-template>

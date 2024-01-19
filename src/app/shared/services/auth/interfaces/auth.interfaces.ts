@@ -23,7 +23,7 @@ export interface IToken {
   Id?: string;
   PositionName?: string;
   DepartmentName?: string;
-  Roles?: IRole[];
+  role?: string;
   IsConnectedGG?: boolean;
   GGAvatarUrl?: string;
 }

@@ -21,7 +21,7 @@
         [ngClass]="{'d-flex align-items-center justify-content-center': loading}">
         <div *ngIf="wageData">
           <div>Số ngày làm việc tháng hiện tại: {{wageData.time_month}}</div>
-          <div class="pm-mt-8px">Lương tạm tính: {{wageData.wage | number}}</div>
+          <div class="pm-mt-8px">Lương tạm tính: {{wageData.wage | number}} VND</div>
         </div>
         <nz-spin *ngIf="loading"
           nzSimple></nz-spin>

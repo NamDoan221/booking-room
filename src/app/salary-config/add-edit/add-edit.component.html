@@ -1,0 +1,58 @@
+<div class="w-100 h-100">
+  <form nz-form
+    class="w-100 h-100"
+    [formGroup]="salaryConfigForm">
+    <div class="h-100 w-100 d-flex flex-column justify-content-between">
+      <div>
+        <nz-form-item class="pm-mt-16px bm-mb-0">
+          <nz-form-control nzErrorTip="Nhân viên không thể để trống!">
+            <nz-form-label [nzNoColon]="true"
+              [nzFor]="'account_id'">
+              Nhân viên
+            </nz-form-label>
+            <div class="w-100">
+              <nz-select [nzDisabled]="modeEdit"
+                [formControlName]="'account_id'"
+                [nzPlaceHolder]="'Chọn nhân viên'"
+                [nzNotFoundContent]="notFoundAccountTemplate">
+                <nz-option *ngFor="let item of listAccount"
+                  [nzLabel]="item.fullname + '(' + item.email + ')'"
+                  [nzValue]="item.id"></nz-option>
+              </nz-select>
+              <ng-template #notFoundAccountTemplate>
+                <div class="d-flex align-items-center justify-content-center">
+                  <span>{{'Chưa có nhân viên nào trong danh sách'}}</span>
+                </div>
+              </ng-template>
+            </div>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item class="pm-mt-16px bm-mb-0">
+          <nz-form-control [nzErrorTip]="salaryErrorTpl">
+            <nz-form-label [nzNoColon]="true"
+              [nzFor]="'wage'">
+              Lương
+            </nz-form-label>
+            <nz-input-group>
+              <input type="number"
+                nz-input
+                class="pm-border-radius-4px"
+                formControlName="wage"
+                placeholder="Nhập lương">
+            </nz-input-group>
+          </nz-form-control>
+          <ng-template #salaryErrorTpl
+            let-control>
+            <ng-container *ngIf="control.hasError('required')">Lương không thể để trống!</ng-container>
+          </ng-template>
+        </nz-form-item>
+      </div>
+      <div class="d-flex justify-content-end pm-mt-20px">
+        <button nz-button
+          nzType="primary"
+          [nzLoading]="!!loading"
+          (click)="handlerUpdate($event)">{{modeEdit ? 'Cập nhật' : 'Lưu'}}</button>
+      </div>
+    </div>
+  </form>
+</div>

@@ -23,6 +23,6 @@ export class PmNotFoundComponent {
 
   protected handlerBackHome(event: Event) {
     event.stopPropagation();
-    this.router.navigate(['/account']);
+    this.router.navigate(['/account-management']);
   }
 }
