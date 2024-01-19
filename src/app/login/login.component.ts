@@ -76,7 +76,8 @@ export class PmLoginComponent implements OnInit {
       }
       await this.auth.login(body);
       this.nzMessageService.success('Đăng nhập thành công!');
-      this.router.navigate(['/account-management']);
+      const role = this.auth.decodeToken().role;
+      this.router.navigate([role === 'admin' ? '/account-management' : '/task']);
     } catch (error) {
       this.nzMessageService.error('Đăng nhập thất bại! Vui lòng kiểm tra lại thông tin đăng nhập.');
       console.log(error);

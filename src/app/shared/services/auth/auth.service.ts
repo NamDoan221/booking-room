@@ -201,7 +201,16 @@ export class AuthService extends BaseService {
   }
 
   public checkPermission(path: string, action?: string) {
-    // const roles = this.decodeToken()?.Roles;
+    const role = this.decodeToken()?.role;
+
+    if (role === 'client') {
+      return false;
+    }
+    if (role === 'user' && (path !== '/task' && path !== '/logout')) {
+      return false;
+    }
+    return true;
+
     // const findRoleByPath = roles?.find(role => role.Url === path);
     // if (!findRoleByPath) {
     //   this.nzMessageService.error('Bạn không có quyền truy cập chức năng này.');
@@ -232,9 +241,9 @@ export class UserCanActive {
     if (!this.auth.verifyToken()) {
       return false;
     }
-    // if (!this.auth.checkPermission(state.url.split('?')[0])) {
-    //   return false;
-    // }
+    if (!this.auth.checkPermission(state.url.split('?')[0])) {
+      return false;
+    }
     return true;
   }
 }

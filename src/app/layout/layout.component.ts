@@ -61,7 +61,18 @@ export class PmLayoutComponent implements OnInit {
   async buildMenu() {
     // const roles = this.auth.decodeToken()?.Roles;
     try {
+      if (this.accountFromCache?.role === 'client') {
+        return;
+      }
       this.menuData = menuDefault()
+      if (this.accountFromCache?.role === 'user') {
+        this.menuData = this.menuData.map(item => {
+          return {
+            ...item,
+            FunctionChilds: item.FunctionChilds?.filter(func => func.Url === '/task' || func.Url === '/logout')
+          }
+        })
+      }
       // const result = await this.functionService.getListFunction({ page: 1, pageSize: 100, active: true, search: '' });
       // const functionByRole = result.Value?.filter(item => roles?.find(role => role.IdFunction === item.Id));
       // menuDefault().forEach(item => {
