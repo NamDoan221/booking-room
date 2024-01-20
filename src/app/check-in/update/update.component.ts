@@ -74,6 +74,9 @@ export class PmCheckInUpdateComponent implements OnInit {
       const dataTime = dayjs(this.selectDate).format('DD/MM/YYYY');
       const result = await this.accountService.getAccountCheckInOfDay(dataTime);
 
+      if (!result.data.length) {
+        return;
+      }
       this.accountCheckedIn = result.data.map((item: { id: string; time_work: number; }) => {
         return {
           account_id: item.id,
